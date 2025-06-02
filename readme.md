@@ -1,4 +1,4 @@
 # 安裝套件
-    ```
-    npm install
-    ```
+```
+npm install
+```
