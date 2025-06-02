@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "electron": "^29.3.2",
+    "opencc-js": "^1.0.5"
+  },
+  "name": "simple_traditional_chinese_transfer",
+  "version": "1.0.0",
+  "description": "timely transfer simple chinese to traditional chinece or reverse",
+  "main": "main.js",
+  "scripts": {
+    "start": "chcp 65001 && electron ."
+  },
+  "type": "commonjs",
+  "author": "fan",
+  "license": "ISC"
+}

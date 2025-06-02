@@ -1,0 +1,41 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    display: flex; /* 將 body 設為 flex 容器，使其子元素 container 能填滿 */
+    flex-direction: column; /* 讓 body 的子元素垂直排列 (如果有的話) */
+    min-height: 100vh; /* 確保 body 至少填滿整個視窗高度 */
+    box-sizing: border-box; /* 確保 padding 不會增加 body 的總寬高 */
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1; /* 讓 container 填滿 body 的剩餘空間 */
+    /* height: calc(100vh - 40px);  <-- 這個可以移除或調整，因為 body 已經處理了高度 */
+}
+
+.textarea-group {
+    flex: 1; /* 讓兩個 textarea-group 平均分配 container 的寬度 */
+    margin: 0 10px;
+    display: flex;
+    flex-direction: column; /* 使 label 和 textarea 垂直排列 */
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+textarea {
+    flex-grow: 1; /* 讓 textarea 填滿其父元素 .textarea-group 的剩餘垂直空間 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none; /* 禁止調整大小，讓 flex 控制 */
+    box-sizing: border-box; /* 確保 padding 和 border 不會增加 textarea 的總寬高 */
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>繁簡轉換器</title>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+    <div class="container" style="width: 100%;">
+        <div class="textarea-group">
+            <label for="traditionalText">繁體中文</label>
+            <textarea id="traditionalText" placeholder="在此輸入繁體中文..."></textarea>
+        </div>
+        <div class="textarea-group">
+            <label for="simplifiedText">简体中文</label>
+            <textarea id="simplifiedText" placeholder="在此输入简体中文..."></textarea>
+        </div>
+    </div>
+    <script src="./renderer.js"></script>
+</body>
+</html>
