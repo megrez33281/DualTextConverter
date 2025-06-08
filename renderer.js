@@ -1,12 +1,14 @@
-const traditionalTextArea = document.getElementById('traditionalText');
-const simplifiedTextArea = document.getElementById('simplifiedText');
+const sourceSelect = document.getElementById('source-select');
+const targetSelect = document.getElementById('target-select');
+const sourceTextArea = document.getElementById('sourceText');
+const targetTextArea = document.getElementById('targetText');
 
-// 用於防止無限迴圈的標記，當某個格子在翻譯時，會停止當前的翻譯行為
+// 用於防止因程式更新文字而觸發的無限迴圈
 let isTranslating = false;
 
-// Debounce函數，只有在悼祭時結束才會直執行函數，避免函數被頻繁呼叫
+// Debounce 函數：延遲執行，避免在快速打字時頻繁觸發轉換
 function debounce(func, delay) {
-    let timeout;   // 此處timeout類似用來以間接的方式操作計時器，所以可以通過它清除已經設定的計時器
+    let timeout;
     return function(...args) {
         const context = this;
         clearTimeout(timeout);
@@ -14,60 +16,58 @@ function debounce(func, delay) {
     };
 }
 
-const handleTraditionalInput = async () => {
+// 核心轉換函數
+const performTranslation = async (inputArea, outputArea, fromType, toType) => {
     if (isTranslating) return;
     isTranslating = true;
 
-    const text = traditionalTextArea.value; //得到框框內的文字內容
-    if (text.trim() === '') {
-        simplifiedTextArea.value = '';
-    } else {
-        try {
-            const translated = await window.electronAPI.translateText(text, 'simplified');
-            // 只有當內容確實改變時才更新
-            if (simplifiedTextArea.value !== translated) {
-                simplifiedTextArea.value = translated;
+    const text = inputArea.value;
+
+    try {
+        if (text.trim() === '') {
+            outputArea.value = '';
+        } else {
+            const translated = await window.electronAPI.translateText({
+                text: text,
+                sourceType: fromType,
+                targetType: toType,
+            });
+
+            // 只有當內容確實改變時才更新，避免不必要的重繪和事件觸發
+            if (outputArea.value !== translated) {
+                outputArea.value = translated;
             }
-        } catch (error) {
-            console.error("Error translating to simplified:", error);
         }
+    } catch (error) {
+        console.error("Translation failed:", error);
+        outputArea.value = "轉換時發生錯誤";
+    } finally {
+        // 使用一個微小的延遲來重置標記，確保 DOM 更新完成
+        setTimeout(() => { isTranslating = false; }, 50);
     }
-    isTranslating = false;
 };
 
-const handleSimplifiedInput = async () => {
-    if (isTranslating) return;
-    isTranslating = true;
+// 處理來源文字框的輸入事件
+const handleSourceInput = () => {
+    performTranslation(sourceTextArea, targetTextArea, sourceSelect.value, targetSelect.value);
+};
 
-    const text = simplifiedTextArea.value;
-    if (text.trim() === '') {
-        traditionalTextArea.value = '';
-    } else {
-        try {
-            const translated = await window.electronAPI.translateText(text, 'traditional');
-            if (traditionalTextArea.value !== translated) {
-                traditionalTextArea.value = translated;
-            }
-        } catch (error) {
-            console.error("Error translating to traditional:", error);
-        }
-    }
-    isTranslating = false;
+// 處理目標文字框的輸入事件 (是的，你也可以在目標框輸入來反向轉換)
+const handleTargetInput = () => {
+    performTranslation(targetTextArea, sourceTextArea, targetSelect.value, sourceSelect.value);
 };
 
 // 為輸入事件添加防抖處理
-traditionalTextArea.addEventListener('input', debounce(handleTraditionalInput, 300));
-simplifiedTextArea.addEventListener('input', debounce(handleSimplifiedInput, 300));
+sourceTextArea.addEventListener('input', debounce(handleSourceInput, 300));
+targetTextArea.addEventListener('input', debounce(handleTargetInput, 300));
 
-//確保聚焦時不會因為 placeholder 觸發翻譯
-traditionalTextArea.addEventListener('focus', () => {
-    if (traditionalTextArea.value === traditionalTextArea.placeholder) {
-        traditionalTextArea.value = '';
-    }
+// 當下拉選單變化時，立即重新翻譯
+sourceSelect.addEventListener('change', () => {
+    // 當來源類型改變，從目標框反向翻譯回來
+    performTranslation(targetTextArea, sourceTextArea, targetSelect.value, sourceSelect.value);
 });
 
-simplifiedTextArea.addEventListener('focus', () => {
-    if (simplifiedTextArea.value === simplifiedTextArea.placeholder) {
-        simplifiedTextArea.value = '';
-    }
+targetSelect.addEventListener('change', () => {
+    // 當目標類型改變，從來源框進行翻譯
+    performTranslation(sourceTextArea, targetTextArea, sourceSelect.value, targetSelect.value);
 });
