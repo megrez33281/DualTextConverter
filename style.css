@@ -1,50 +1,131 @@
 /* style.css */
+
+/* 1. 定義顏色和字體變數 */
+:root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    --bg-color: #f8f9fa; /* 更柔和的背景色 */
+    --surface-color: #ffffff; /* 元件背景色 */
+    --text-color-primary: #212529; /* 主要文字顏色 */
+    --text-color-secondary: #6c757d; /* 次要文字/標籤顏色 */
+    --border-color: #dee2e6;
+    --border-radius: 8px; /* 更大的圓角 */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+    /* 焦點顏色 */
+    --primary-color: #0d6efd; /* Bootstrap Blue */
+    --primary-focus-ring: rgba(13, 110, 253, 0.25);
+}
+
+/* 2. 全局和佈局樣式 */
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-sans);
     margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+    background-color: var(--bg-color);
+    color: var(--text-color-primary);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    box-sizing: border-box;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 24px 32px; /* 增加整體內邊距 */
+}
+
+.app-header {
+    text-align: center;
+    color: var(--text-color-primary);
+    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .container {
     display: flex;
-    justify-content: space-around;
     flex-grow: 1;
+    gap: 24px; /* 使用 gap 來控制間距，更現代化 */
 }
 
 .textarea-group {
     flex: 1;
-    margin: 0 10px;
     display: flex;
     flex-direction: column;
 }
 
+/* 3. 元件樣式 (textarea, select, label) */
 label {
     margin-bottom: 8px;
-    font-weight: bold;
-    color: #333;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    font-size: 14px;
 }
 
+textarea,
 select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px; /* 與下方的 textarea 增加間距 */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 15px;
-    background-color: white;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    background-color: var(--surface-color);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none; /* 移除 iOS 上的預設樣式 */
+    appearance: none;
+}
+
+textarea:focus,
+select:focus {
+    outline: none; /* 移除預設的藍色/橘色外框 */
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-focus-ring); /* 現代化的焦點環 */
 }
 
 textarea {
     flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
     resize: none;
     box-sizing: border-box;
+    line-height: 1.6; /* 增加行高，更易讀 */
+}
+
+select {
+    margin-bottom: 12px;
+    /* 自訂下拉箭頭 */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+}
+
+/* 4. 細節優化 (捲軸和頁腳) */
+
+/* 美化 WebKit 瀏覽器（Chrome, Safari, Electron）的捲軸 */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 20px;
+    border: 2px solid var(--surface-color);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+}
+
+.app-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding: 16px 0;
+    font-size: 12px;
+    color: var(--text-color-secondary);
+    border-top: 1px solid var(--border-color);
 }
