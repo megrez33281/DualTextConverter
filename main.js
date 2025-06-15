@@ -4,7 +4,7 @@ const path = require('path');
 const OpenCC = require('opencc-js');
 
 // 初始化 OpenCC 轉換器
-const s2tConverter = OpenCC.Converter({ from: 'cn', to: 'twp' });
+const s2tConverter = OpenCC.Converter({ from: 'cn', to: 'tw' });
 const t2sConverter = OpenCC.Converter({ from: 'tw', to: 'cn' });
 
 // --- Helper Functions ---
