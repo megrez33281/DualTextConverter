@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "electron": "^29.3.2",
     "opencc-js": "^1.0.5"
   },
   "name": "simple_traditional_chinese_transfer",
@@ -8,9 +7,45 @@
   "description": "timely transfer simple chinese to traditional chinece or reverse",
   "main": "main.js",
   "scripts": {
-    "start": "chcp 65001 && electron ."
+    "start": "chcp 65001 && electron .",
+    "dist": "electron-builder"
   },
   "type": "commonjs",
   "author": "fan",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^29.3.2",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "phecda98010639-SimpleTraditionalTransfer",
+    "productName": "即時繁簡轉換",
+    "copyright": "Copyright © 2025 phecda98010639",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
 }
